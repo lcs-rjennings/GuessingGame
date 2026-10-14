@@ -86,7 +86,7 @@ struct GuessingGameView: View {
             // The guess you are about to make, shown nice and big.
             // TRY: Change the size of this number from 96 to something else.
             Text("\(guess)")
-                .font(.system(size: 120, weight: .bold))
+                .font(.system(size: 100, weight: .bold))
                 .monospacedDigit()
 
             // Four buttons to change the guess.
