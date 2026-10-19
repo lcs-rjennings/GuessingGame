@@ -9,9 +9,8 @@
 //  and it counts your guesses. When you find the number,
 //  you can play again.
 //
-//  WHAT IT DOES NOT DO YET
-//  It does not tell you if your guess is too high or too low.
-//  That part is up to you.
+//  NEW IN LESSON 3
+//  It tells you if your guess is too high or too low.
 //
 
 import SwiftUI
@@ -21,6 +20,8 @@ import SwiftUI
 // TRY: Change highestNumber to 10 for an easy game, or to 1000 for a hard one.
 let lowestNumber: Int = 1
 let highestNumber: Int = 100
+// What the game calls the player.
+let playerName: String = "Ryan"
 
 // The game itself: what it remembers, what it shows on the screen,
 // and what it does when you click a button.
@@ -47,6 +48,8 @@ struct GuessingGameView: View {
 
     // Becomes true when the player finds the secret number.
     @State var gameIsOver: Bool = false
+    // How many games the player has won since the app started.
+    @State var gamesWon: Int = 0
 
     // MARK: - Computed properties
 
@@ -56,7 +59,7 @@ struct GuessingGameView: View {
             // The title at the top of the screen.
             HStack {
                 Image(systemName: "sparkle.magnifyingglass")
-                Text("Guessing Game")
+                Text("Guesses so far: \(guessCount)    Games won: \(gamesWon)")
             }
             .font(.largeTitle)
             .bold()
@@ -125,10 +128,13 @@ struct GuessingGameView: View {
                 }
                 .buttonStyle(.borderedProminent)
             }
-
-            Text("Guesses so far: \(guessCount)")
-                .font(.headline)
-                .foregroundStyle(Color.secondary)
+            HStack {
+                Image(systemName: "moon.stars")
+                
+                Text("Guesses so far: \(guessCount)")
+                    .font(.headline)
+                    .foregroundStyle(Color.secondary)
+            }
         }
         .padding(32)
         .font(.title2)
@@ -144,20 +150,26 @@ struct GuessingGameView: View {
 
     // Checks the player's guess against the secret number.
     func checkGuess() {
-
+ 
         // One more guess has been made.
         guessCount += 1
-
+ 
         if guess == secretNumber {
-            message = "Yes! \(secretNumber) is my number."
+            message = "Yes, \(playerName)! \(secretNumber) is my number."
             messageSymbol = "star.circle.fill"
             messageColor = Color.green
             gameIsOver = true
+            gamesWon += 1
         } else {
-            // TRY: Change this message. Make it kinder, or sillier.
-            message = "\(guess) is incorrect! Give it another shot :)"
-            messageSymbol = "xmark.circle.fill"
-            messageColor = Color.orange
+            if guess < secretNumber {
+                message = "\(guess) is too low. Go higher."
+                messageSymbol = "arrow.up.circle.fill"
+                messageColor = Color.blue
+            } else {
+                message = "\(guess) is too high. Go lower."
+                messageSymbol = "arrow.down.circle.fill"
+                messageColor = Color.red
+            }
         }
     }
 
