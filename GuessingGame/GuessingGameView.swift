@@ -168,7 +168,7 @@ struct GuessingGameView: View {
             } else {
                 message = "\(guess) is too high. Go lower."
                 messageSymbol = "arrow.down.circle.fill"
-                messageColor = Color.red
+                messageColor = Color.blue
             }
         }
     }
