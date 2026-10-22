@@ -23,6 +23,9 @@ let highestNumber: Int = 100
 // What the game calls the player.
 let playerName: String = "Ryan"
 
+// How many guesses the player gets before the game is over.
+let maximumGuesses: Int = 7
+
 // The game itself: what it remembers, what it shows on the screen,
 // and what it does when you click a button.
 struct GuessingGameView: View {
@@ -59,7 +62,7 @@ struct GuessingGameView: View {
             // The title at the top of the screen.
             HStack {
                 Image(systemName: "sparkle.magnifyingglass")
-                Text("Guesses so far: \(guessCount)    Games won: \(gamesWon)")
+                Text("Guesses: \(guessCount) of \(maximumGuesses)    Games won: \(gamesWon)")
             }
             .font(.largeTitle)
             .bold()
@@ -169,10 +172,16 @@ struct GuessingGameView: View {
                 message = "\(guess) is too high. Go lower."
                 messageSymbol = "arrow.down.circle.fill"
                 messageColor = Color.blue
+                // Out of guesses, and still not right? Then the game is over.
+                if guess != secretNumber && guessCount >= maximumGuesses {
+                    message = "Out of guesses! My number was \(secretNumber)."
+                    messageSymbol = "xmark.octagon.fill"
+                    messageColor = Color.gray
+                    gameIsOver = true
+                }
             }
         }
     }
-
     // Makes the guess 10 smaller, but never smaller than the lowest number.
     func lowerGuessByTen() {
         guess -= 10
